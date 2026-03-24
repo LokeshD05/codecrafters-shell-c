@@ -13,6 +13,6 @@ int main(int argc, char *argv[])
   fgets(input, sizeof(input), stdin);
 
   input[strlen(input) - 1] = '\0';
-  printf("%s:command not found\n", input);
+  printf("%s: command not found\n", input);
   return 0;
 }
