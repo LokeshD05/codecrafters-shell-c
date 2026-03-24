@@ -6,14 +6,18 @@ int main(int argc, char *argv[])
 {
   // Flush after every printf
   setbuf(stdout, NULL);
-while(1){
-  printf("$ ");
+  while (1)
+  {
+    printf("$ ");
 
-  char input[100];
-  fgets(input, sizeof(input), stdin);
+    char input[100];
+    fgets(input, sizeof(input), stdin);
 
-  input[strlen(input) - 1] = '\0';
-  printf("%s: command not found\n", input);
-}
+    input[strlen(input) - 1] = '\0';
+
+    if(input == "exit") exit(0);
+    printf("%s: command not found\n", input);
+
+  }
   return 0;
 }
