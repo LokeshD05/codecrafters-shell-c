@@ -15,14 +15,25 @@ int main(int argc, char *argv[])
 
     input[strlen(input) - 1] = '\0';
 
-    if (strcmp(input, "exit") == 0){
+    if (strcmp(input, "exit") == 0)
+    {
       break;
     }
-    else if (strncmp(input, "echo ", 5) == 0){
+    else if (strncmp(input, "echo ", 5) == 0)
+    {
       printf("%s\n", input + 5);
     }
-    else{
-      printf("%s: command not found\n", input);
+    else
+    {
+      if (strncmp(input, "type", 4) == 0)
+      {
+        if (strncmp(input, "type echo", 9) == 0)
+          printf("%s is a shell builtin", input + 5);
+        else if (strncmp(input, "type exit", 9) == 0)
+          printf("%s is a shell builtin", input + 5) ;
+        else 
+          printf("%s: command not found\n", input);
+      }
     }
   }
   return 0;
