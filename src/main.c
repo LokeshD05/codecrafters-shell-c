@@ -23,18 +23,19 @@ int main(int argc, char *argv[])
     {
       printf("%s\n", input + 5);
     }
-    else
+    else if (strncmp(input, "type ", 5) == 0)
     {
-      if (strncmp(input, "type", 4) == 0)
+      char *cmd = input + 5;
+
+      if (strcmp(cmd, "echo") == 0 ||
+          strcmp(cmd, "exit") == 0 ||
+          strcmp(cmd, "type") == 0)
       {
-        if (strncmp(input, "type echo", 9) == 0)
-          printf("%s is a shell builtin\n", input + 5);
-        else if (strncmp(input, "type exit", 9) == 0)
-          printf("%s is a shell builtin\n", input + 5);
-        else if (strncmp(input, "type type", 9) == 0)
-          printf("%s is a shell builtin\n", input + 5) ;
-        else 
-          printf("%s: command not found\n", input);
+        printf("%s is a shell builtin\n", cmd);
+      }
+      else
+      {
+        printf("%s: command not found\n", input);
       }
     }
   }
