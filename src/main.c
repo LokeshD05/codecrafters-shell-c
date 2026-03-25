@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     {
       printf("%s\n", input + 5);
     }
-
+    
     else if (strncmp(input, "type ", 5) == 0)
     {
       char *cmd = input + 5;
@@ -35,13 +35,13 @@ int main(int argc, char *argv[])
         printf("%s is a shell builtin\n", cmd);
       }
       else{
-        printf("%s :not found\n",cmd);
+        printf("%s: not found\n",cmd);
       }
     }
 
       else
       {
-        printf("%s :command not found\n", input);
+        printf("%s: command not found\n", input);
       }
   }
   return 0;
