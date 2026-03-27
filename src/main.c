@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include<sys/wait.h>
+#include <sys/wait.h>
 
 #define MAX 1024
 
@@ -15,38 +15,40 @@ int isbuilt_in(char *cmd)
 
 void findPath(char *cmd)
 {
-  char* path_env = getenv("PATH");
+  char *path_env = getenv("PATH");
 
-  if(!path_env){
+  if (!path_env)
+  {
     printf("%s: not found\n");
     return;
   }
 
   char path_copy[MAX];
-  strncpy(path_copy,path_env,MAX -1);
-  path_copy[MAX -1]='\0';
+  strncpy(path_copy, path_env, MAX - 1);
+  path_copy[MAX - 1] = '\0';
 
-  char* dir = strtok(path_copy,":");
+  char *dir = strtok(path_copy, ":");
 
-  while(dir){
+  while (dir)
+  {
     char full_path[MAX];
-    snprintf(full_path,sizeof(full_path),"%s/%s",dir,cmd);
+    snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
 
-    if(access(full_path,X_OK) == 0){
-      printf("%s is %s\n",cmd,full_path);
+    if (access(full_path, X_OK) == 0)
+    {
+      printf("%s is %s\n", cmd, full_path);
       return;
     }
-    
-    dir = strtok(NULL,":");
+
+    dir = strtok(NULL, ":");
   }
 
-  printf("%s: not found\n",cmd);
+  printf("%s: not found\n", cmd);
 }
-
 
 int main(int argc, char *argv[])
 {
- 
+
   setbuf(stdout, NULL);
   while (1)
   {
@@ -57,19 +59,19 @@ int main(int argc, char *argv[])
 
     input[strlen(input) - 1] = '\0';
 
-// exit command
+    // exit command
     if (strcmp(input, "exit") == 0)
     {
       break;
     }
 
-// echo command
+    // echo command
     else if (strncmp(input, "echo ", 5) == 0)
     {
       printf("%s\n", input + 5);
     }
 
-// type command
+    // type command
     else if (strncmp(input, "type ", 5) == 0)
     {
       char *cmd = input + 5;
@@ -80,31 +82,37 @@ int main(int argc, char *argv[])
       }
       else
       {
-        findPath(cmd);   
+        findPath(cmd);
       }
     }
 
-// running external programs
-    else if{
+    // running external programs
+    else if ()
+    {
       char *args[10];
-      args[0] = strtok(input," ");
+      args[0] = strtok(input, " ");
 
-      int i =1;
-      while(args[i]){
-        args[i] = strtok(NULL," ");
+      int i = 1;
+      while (args[i])
+      {
+        args[i] = strtok(NULL, " ");
         i++;
       }
 
-      //fork
+      // fork
 
       pid_t pid = fork();
 
-      if(pid == 0){
-        execvp(args[0],args);
+      if (pid == 0)
+      {
+        execvp(args[0], args);
 
-        perror("execution failed!\n");
+        
+        printf("%s: command not found\n", args[0]);
+        exit(1);
       }
-      else{
+      else
+      {
         wait(NULL);
       }
     }
