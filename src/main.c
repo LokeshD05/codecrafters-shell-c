@@ -41,6 +41,8 @@ void findPath(char *cmd)
 
   printf("%s: not found\n",cmd);
 }
+
+
 int main(int argc, char *argv[])
 {
  
@@ -54,15 +56,19 @@ int main(int argc, char *argv[])
 
     input[strlen(input) - 1] = '\0';
 
+// exit command
     if (strcmp(input, "exit") == 0)
     {
       break;
     }
+
+// echo command
     else if (strncmp(input, "echo ", 5) == 0)
     {
       printf("%s\n", input + 5);
     }
 
+// type command
     else if (strncmp(input, "type ", 5) == 0)
     {
       char *cmd = input + 5;
@@ -73,8 +79,32 @@ int main(int argc, char *argv[])
       }
       else
       {
-        findPath(cmd);
-       
+        findPath(cmd);   
+      }
+    }
+
+// running external programs
+    else if{
+      char *args[10];
+      args[0] = strtok(input," ");
+
+      int i =1;
+      while(args[i]){
+        args[i] = strtok(NULL," ");
+        i++;
+      }
+
+      //fork
+
+      pid_t pid = fork();
+
+      if(pid == 0){
+        execvp(args[0],args);
+
+        perror("execution failed!\n");
+      }
+      else{
+        wait(NULL);
       }
     }
 
