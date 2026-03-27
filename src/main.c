@@ -87,7 +87,7 @@ int main(int argc, char *argv[])
     }
 
     // running external programs
-    else if ()
+    else 
     {
       char *args[10];
       args[0] = strtok(input, " ");
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
       {
         execvp(args[0], args);
 
-        
+
         printf("%s: command not found\n", args[0]);
         exit(1);
       }
@@ -115,11 +115,6 @@ int main(int argc, char *argv[])
       {
         wait(NULL);
       }
-    }
-
-    else
-    {
-      printf("%s: command not found\n", input);
     }
   }
   return 0;
