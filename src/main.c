@@ -87,16 +87,16 @@ int main(int argc, char *argv[])
     }
 
     // running external programs
-    else 
+    else
     {
       char *args[10];
-      args[0] = strtok(input, " ");
+      int i = 0;
 
-      int i = 1;
-      while (args[i])
+      args[i] = strtok(input, " ");
+      while (args[i] != NULL)
       {
-        args[i] = strtok(NULL, " ");
         i++;
+        args[i] = strtok(NULL, " ");
       }
 
       // fork
@@ -106,7 +106,6 @@ int main(int argc, char *argv[])
       if (pid == 0)
       {
         execvp(args[0], args);
-
 
         printf("%s: command not found\n", args[0]);
         exit(1);
