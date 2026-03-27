@@ -23,7 +23,7 @@ void findPath(char *cmd)
 
   char path_copy[MAX];
   strncpy(path_copy,path_env,MAX -1);
-  path_copy[MAX -1]="\0";
+  path_copy[MAX -1]='\0';
 
   char* dir = strtok(path_copy,":");
 
