@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <path.h>
+#include <unistd.h>
+
 #define MAX 1024
 
 int isbuilt_in(char *cmd)
