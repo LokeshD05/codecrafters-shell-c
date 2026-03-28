@@ -111,12 +111,13 @@ int main(int argc, char *argv[])
         printf("cd: missing argument\n");
       }
 
-      // ~ 
-      if (strncmp(path[0], "~", 1) == 0)
+      // ~
+      if (strncmp(path, "~", 1) == 0)
       {
         char *home_dir = getenv("HOME");
 
-        if(!home_dir){
+        if (!home_dir)
+        {
           printf("No home\n");
           continue;
         }
@@ -129,11 +130,12 @@ int main(int argc, char *argv[])
           printf("cd: %s: No such file or directory\n", full_path);
         }
       }
-
-
-      if (chdir(path) != 0)
+      else
       {
-        printf("cd: %s: No such file or directory\n", path);
+        if (chdir(path) != 0)
+        {
+          printf("cd: %s: No such file or directory\n", path);
+        }
       }
     }
     // running external programs
