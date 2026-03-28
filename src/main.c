@@ -87,6 +87,8 @@ int main(int argc, char *argv[])
         findPath(cmd);
       }
     }
+   
+    // pwd command
     else if (strncmp(input, "pwd", 3) == 0)
     {
       char cwd[MAX];
@@ -96,6 +98,17 @@ int main(int argc, char *argv[])
       }
       else
         perror("getcwd error");
+    }
+    
+    //cd command
+    else if (strncmp(input,"cd " ,3) == 0){
+      char* cd = strtok(input," "); 
+      char* path = strtok(NULL," "); // the path
+      
+      if(chdir(path) != 0 ){
+        printf("cd: path: No such file or directory\n");
+      }
+
     }
     // running external programs
     else
