@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
       char* path = strtok(NULL," "); // the path
       
       if(chdir(path) != 0 ){
-        printf("cd: path: No such file or directory\n");
+        printf("cd: %s: No such file or directory\n",path);
       }
 
     }
