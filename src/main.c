@@ -10,7 +10,8 @@ int isbuilt_in(char *cmd)
 {
   return strcmp(cmd, "echo") == 0 ||
          strcmp(cmd, "exit") == 0 ||
-         strcmp(cmd, "type") == 0;
+         strcmp(cmd, "type") == 0 ||
+         strcmp(cmd, "pwd")  == 0;
 }
 
 void findPath(char *cmd)
@@ -74,7 +75,7 @@ int main(int argc, char *argv[])
     // type command
     else if (strncmp(input, "type ", 5) == 0)
     {
-      char *cmd = input + 5;
+      char *cmd = strtok(input,"");
 
       if (isbuilt_in(cmd))
       {
@@ -84,10 +85,6 @@ int main(int argc, char *argv[])
       {
         findPath(cmd);
       }
-    }
-    else if(strncmp(input ,"pwd", 3) == 0){
-      char* path_env = getenv("PATH");
-      printf("%s",path_env);
     }
     // running external programs
     else
