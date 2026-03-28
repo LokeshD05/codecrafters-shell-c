@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
       char cwd[MAX];
       if (getcwd(cwd, sizeof(cwd)) != NULL)
       {
-        printf("%s", cwd);
+        printf("%s\n", cwd);
       }
       else
         perror("getcwd error");
