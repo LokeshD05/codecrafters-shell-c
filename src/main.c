@@ -110,10 +110,27 @@ int main(int argc, char *argv[])
       {
         printf("cd: missing argument\n");
       }
-      if(strncmp(path,"~",1) == 0){
-        char* home_dir = getenv("HOME");
-        chdir(home_dir);
+
+      // ~ 
+      if (strncmp(path, "~", 1) == 0)
+      {
+        char *home_dir = getenv("HOME");
+
+        if(!home_dir){
+          printf("No home\n");
+          continue;
+        }
+
+        char full_path[MAX];
+        snprintf(full_path, sizeof(full_path), "%s%s", home_dir, path + 1);
+
+        if (chdir(full_path) != 0)
+        {
+          printf("cd: %s: No such file or directory\n", full_path);
+        }
       }
+
+
       if (chdir(path) != 0)
       {
         printf("cd: %s: No such file or directory\n", path);
