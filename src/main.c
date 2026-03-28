@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
         printf("cd: missing argument\n");
       }
       if(strncmp(path,'~',1) == 0){
-        char* home_dir = getenve("HOME");
+        char* home_dir = getenv("HOME");
         chdir(home);
       }
       if (chdir(path) != 0)
