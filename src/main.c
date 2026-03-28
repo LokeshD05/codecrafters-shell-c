@@ -104,14 +104,20 @@ int main(int argc, char *argv[])
     else if (strncmp(input, "cd ", 3) == 0)
     {
       char *cd = strtok(input, " ");
-      char *path = strtok(NULL, " "); // the path
+      char *path = strtok(NULL, ""); // the path
 
-  
-      
-        if (chdir(path) != 0)
-        {
-          printf("cd: %s: No such file or directory\n", path);
-        }
+      if (path == NULL)
+      {
+        printf("cd: missing argument\n");
+      }
+      if(strncmp(path,'~') == 0){
+        char* home_dir = getenve("HOME");
+        chdir(home);
+      }
+      if (chdir(path) != 0)
+      {
+        printf("cd: %s: No such file or directory\n", path);
+      }
     }
     // running external programs
     else
