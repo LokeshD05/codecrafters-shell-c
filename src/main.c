@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
       }
 
       // ~ 
-      if (strncmp(path, "~", 1) == 0)
+      if (strncmp(path[0], "~", 1) == 0)
       {
         char *home_dir = getenv("HOME");
 
