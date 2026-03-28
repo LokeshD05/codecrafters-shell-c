@@ -75,7 +75,8 @@ int main(int argc, char *argv[])
     // type command
     else if (strncmp(input, "type ", 5) == 0)
     {
-      char *cmd = strtok(input," ");
+      char *type = strtok(input," ");
+      char *cmd = strtok(NULL," ");
 
       if (isbuilt_in(cmd))
       {
