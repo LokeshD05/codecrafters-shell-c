@@ -85,7 +85,10 @@ int main(int argc, char *argv[])
         findPath(cmd);
       }
     }
-
+    else if(strncmp(input ,"pwd", 3) == 0){
+      char* path_env = getenv("PATH");
+      printf("%s",path_env);
+    }
     // running external programs
     else
     {
@@ -107,6 +110,7 @@ int main(int argc, char *argv[])
       {
         execvp(args[0], args);
 
+        //* if error occured
         printf("%s: command not found\n", args[0]);
         exit(1);
       }
