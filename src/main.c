@@ -92,8 +92,10 @@ int main(int argc, char *argv[])
         }
         else if ((c == ' ' || c == '\t') && !single_quoted)
         {
-          if (argc == 0)      // skip leading spaces
-            continue;          
+          if (argc == 0){      // skip leading spaces
+            i++;
+            continue;
+          }          
           command[j++] = '\0';
         }
         else
@@ -106,7 +108,7 @@ int main(int argc, char *argv[])
         i++;
       }
 
-      args[argc] = NULL;
+      arguments[argc] = NULL;
       for(int i =1 ;i< argc;i++){
         printf("%s",arguments[i]);
       }
