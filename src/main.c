@@ -47,31 +47,8 @@ void findPath(char *cmd)
   printf("%s: not found\n", cmd);
 }
 
-int main(int argc, char *argv[])
-{
-
-  setbuf(stdout, NULL);
-  while (1)
-  {
-    printf("$ ");
-
-    char input[100];
-    fgets(input, sizeof(input), stdin);
-
-    input[strlen(input) - 1] = '\0';
-
-    // exit command
-    if (strcmp(input, "exit") == 0)
-    {
-      break;
-    }
-
-    // echo command
-    else if (strncmp(input, "echo ", 5) == 0)
-    {
-      char command[MAX];
-      char *arguments[MAX];
-
+int parser(char * input , char ** arguments, char *command){
+  
       memset(command, 0, sizeof(command));
       memset(arguments, 0, sizeof(arguments));
 
@@ -105,10 +82,41 @@ int main(int argc, char *argv[])
             arguments[argc++] = command + j;
           j++;
         }
+
         i++;
       }
 
       arguments[argc] = NULL;
+      return argc;
+}
+
+
+int main(int argc, char *argv[])
+{
+  setbuf(stdout, NULL);
+  
+  char command[MAX];
+  char *arguments[MAX];
+ 
+  while (1)
+  {
+    printf("$ ");
+    
+    char input[100];
+    fgets(input, sizeof(input), stdin); 
+    input[strlen(input) - 1] = '\0';
+    
+    int argc = parse(input,arguments,command);
+   
+    // exit command
+    if (strcmp(input, "exit") == 0)
+    {
+      break;
+    }
+
+    // echo command
+    else if (strncmp(input, "echo ", 5) == 0)
+    {
       for(int i =1 ;i< argc;i++){
         if(i > 1)printf(" "); // add space between each arg
         printf("%s",arguments[i]);
@@ -186,25 +194,26 @@ int main(int argc, char *argv[])
     // running external programs
     else
     {
-      char *args[10];
-      int i = 0;
+      // char *args[10];
+      // int i = 0;
 
-      args[i] = strtok(input, " ");
-      while (args[i] != NULL)
-      {
-        i++;
-        args[i] = strtok(NULL, " ");
-      }
+      // args[i] = strtok(input, " ");
+      // while (args[i] != NULL)
+      // {
+      //   i++;
+      //   args[i] = strtok(NULL, " ");
+      // }
+
 
       // fork
       pid_t pid = fork();
 
       if (pid == 0)
       {
-        execvp(args[0], args);
+        execvp(arguments[0], arguments);
 
         //* if error occured
-        printf("%s: command not found\n", args[0]);
+        printf("%s: command not found\n", arguments[0]);
         exit(1);
       }
       else
