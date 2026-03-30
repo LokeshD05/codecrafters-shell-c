@@ -49,8 +49,8 @@ void findPath(char *cmd)
 
 int parser(char * input , char ** arguments, char *command){
   
-      memset(command, 0, sizeof(command));
-      memset(arguments, 0, sizeof(arguments));
+      memset(command, 0, MAX);
+      memset(arguments, 0, MAX * sizeof(char *));
 
       bool single_quoted = false;
 
