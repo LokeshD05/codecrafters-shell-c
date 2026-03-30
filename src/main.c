@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
     fgets(input, sizeof(input), stdin); 
     input[strlen(input) - 1] = '\0';
     
-    int argc = parse(input,arguments,command);
+    int argc = parser(input,arguments,command);
    
     // exit command
     if (strcmp(input, "exit") == 0)
