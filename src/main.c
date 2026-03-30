@@ -69,7 +69,48 @@ int main(int argc, char *argv[])
     // echo command
     else if (strncmp(input, "echo ", 5) == 0)
     {
-      printf("%s\n", input + 5);
+      char command[MAX];
+      char *arguments[MAX];
+
+      memset(command, 0, sizeof(command));
+      memset(arguments, 0, sizeof(arguments));
+
+      bool single_quoted = false;
+
+      int argc = 0; // act as ptr to argumenst in input
+      int i = 0;
+      int j = 0;
+
+      while (input[i] != '\0')
+      {
+        char c = input[i];
+        if (c == '\'')
+        {
+          single_quoted = single_quoted ? false : true;
+          i++;
+          continue;
+        }
+        else if ((c == ' ' || c == '\t') && !single_quoted)
+        {
+          if (argc == 0)      // skip leading spaces
+            continue;          
+          command[j++] = '\0';
+        }
+        else
+        {
+          command[j] = c;
+          if (argc == 0 || command[j - 1] == '\0')
+            arguments[argc++] = command + j;
+          j++;
+        }
+        i++;
+      }
+
+      args[argc] = NULL;
+      for(int i =1 ;i< argc;i++){
+        printf("%s",arguments[i]);
+      }
+      printf("\n");
     }
 
     // type command
@@ -138,6 +179,7 @@ int main(int argc, char *argv[])
         }
       }
     }
+
     // running external programs
     else
     {
@@ -152,7 +194,6 @@ int main(int argc, char *argv[])
       }
 
       // fork
-
       pid_t pid = fork();
 
       if (pid == 0)
