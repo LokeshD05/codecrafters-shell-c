@@ -194,18 +194,6 @@ int main(int argc, char *argv[])
     // running external programs
     else
     {
-      // char *args[10];
-      // int i = 0;
-
-      // args[i] = strtok(input, " ");
-      // while (args[i] != NULL)
-      // {
-      //   i++;
-      //   args[i] = strtok(NULL, " ");
-      // }
-
-
-      // fork
       pid_t pid = fork();
 
       if (pid == 0)
