@@ -62,14 +62,7 @@ int parser(char * input , char ** arguments, char *command){
       while (input[i] != '\0')
       {
         char c = input[i];
-        if(back_slash){
-         command[j] = c;
-         back_slash = false;
-         i++;
-         j++;
-         continue;
-       }
-        else if (c == '\'' && !double_quoted && !back_slash)
+        if (c == '\'' && !double_quoted && !back_slash)
         {
           single_quoted = single_quoted ? false : true;
           i++;
@@ -96,6 +89,7 @@ int parser(char * input , char ** arguments, char *command){
         else
         {
           command[j] = c;
+          if(back_slash) back_slash = false;
           if (argc == 0 || command[j - 1] == '\0')
             arguments[argc++] = command + j;
           j++;
