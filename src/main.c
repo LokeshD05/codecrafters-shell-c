@@ -73,7 +73,7 @@ int parser(char * input , char ** arguments, char *command){
           i++;
           continue;
         }
-        else if(back_slash){
+        else if(back_slash == true){
           command[j] = c;
           back_slash = false;
           j++;
