@@ -53,8 +53,9 @@ int parser(char * input , char ** arguments, char *command){
       memset(arguments, 0, MAX * sizeof(char *));
 
       bool single_quoted = false;
+      bool double_quoted = false;
 
-      int argc = 0; // act as ptr to argumenst in input
+      int argc = 0; // act as ptr to arguments in input
       int i = 0;
       int j = 0;
 
@@ -67,7 +68,12 @@ int parser(char * input , char ** arguments, char *command){
           i++;
           continue;
         }
-        else if ((c == ' ' || c == '\t') && !single_quoted)
+        else if(c =='\"'){
+          double_quoted = double_quoted ? false : true;
+          i++;
+          continue;
+        }
+        else if ((c == ' ' || c == '\t') && !single_quoted && !double_quoted)
         {
           if (argc == 0){      // skip leading spaces
             i++;
@@ -161,6 +167,7 @@ int main(int argc, char *argv[])
       if (path == NULL)
       {
         printf("cd: missing argument\n");
+        continue;
       }
 
       // ~
