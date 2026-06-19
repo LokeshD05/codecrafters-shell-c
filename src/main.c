@@ -73,7 +73,7 @@ int parser(char * input , char ** arguments, char *command){
           i++;
           continue;
         }
-        else if(c == '\\' && !single_quoted){
+        else if(c == '\\' && !single_quoted && !back_slash){
             back_slash = true;
             i++;
             continue;
