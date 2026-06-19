@@ -78,7 +78,7 @@ int parser(char * input , char ** arguments, char *command){
             i++;
             continue;
         }
-        else if ((c == ' ' || c == '\t') && !single_quoted && !double_quoted)
+        else if ((c == ' ' || c == '\t') && !single_quoted && !double_quoted && !back_slash)
         {
           if (argc == 0){      // skip leading spaces
             i++;
