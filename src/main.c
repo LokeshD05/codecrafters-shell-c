@@ -62,7 +62,7 @@ int parser(char * input , char ** arguments, char *command){
       while (input[i] != '\0')
       {
         char c = input[i];
-        if (c == '\'')
+        if (c == '\'' && !double_quoted)
         {
           single_quoted = single_quoted ? false : true;
           i++;
