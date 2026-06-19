@@ -54,7 +54,7 @@ int parser(char * input , char ** arguments, char *command){
 
       bool single_quoted = false;
       bool double_quoted = false;
-
+      bool back_slash = false;
       int argc = 0; // act as ptr to arguments in input
       int i = 0;
       int j = 0;
@@ -62,16 +62,27 @@ int parser(char * input , char ** arguments, char *command){
       while (input[i] != '\0')
       {
         char c = input[i];
-        if (c == '\'' && !double_quoted)
+        if (c == '\'' && !double_quoted && !back_slash)
         {
           single_quoted = single_quoted ? false : true;
           i++;
           continue;
         }
-        else if(c =='\"'){
+        else if(c =='\"' && !single_quoted && !back_slash){
           double_quoted = double_quoted ? false : true;
           i++;
           continue;
+        }
+        else if(back_slash){
+          command[j] = c;
+          back_slash = false;
+          j++;
+          continue;
+        }
+        else if(c == '\\' && !single_quoted){
+            back_slash = true;
+            i++;
+            continue;
         }
         else if ((c == ' ' || c == '\t') && !single_quoted && !double_quoted)
         {
