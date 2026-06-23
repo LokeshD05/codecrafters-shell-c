@@ -125,7 +125,7 @@ int handle_redirection(char **arguments,int *argc,int *redirected_fd){
 
       *redirected_fd = STDOUT_FILENO;
       int saved_stdout = dup(STDOUT_FILENO);
-      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND);
+      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND,0644);
       dup2(fd,STDOUT_FILENO);
       close(fd);
 
@@ -138,7 +138,7 @@ int handle_redirection(char **arguments,int *argc,int *redirected_fd){
 
       *redirected_fd = STDERR_FILENO;
       int saved = dup(STDERR_FILENO);
-      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND);
+      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND,0644);
       dup2(fd,STDERR_FILENO);
       close(fd);
 
