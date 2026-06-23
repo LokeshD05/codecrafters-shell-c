@@ -118,7 +118,7 @@ int handle_redirection(char **arguments,int *argc,int *redirected_fd){
       
       return saved_stdout;
     }
-    else if(strcmp(arguments[i],">>") == 0 || strcmp(arguments[i],"2>>") == 0){
+    else if(strcmp(arguments[i],">>") == 0 || strcmp(arguments[i],"1>>") == 0){
       char *filename = arguments[i+1];
       arguments[i] = NULL;
       *argc = i;
