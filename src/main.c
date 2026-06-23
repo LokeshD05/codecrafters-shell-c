@@ -117,6 +117,10 @@ int handle_redirection(char **arguments,int *argc){
       return saved_stdout;
     }
     else if(strcmp(arguments[i],"2>") == 0){
+       char* filename = arguments[i+1];
+      arguments[i] = NULL;
+      *argc= i;
+      
       int saved_stdout = dup(STDERR_FILENO);
       int fd = open(filename,O_WRONLY | O_CREAT | O_TRUNC,0644);
       dup2(fd,STDERR_FILENO);
