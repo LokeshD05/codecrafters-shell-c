@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include<fcntl.h>
+#include <fcntl.h>
 #include <sys/wait.h>
 
 #define MAX 1024
@@ -103,8 +103,8 @@ int parser(char * input , char ** arguments, char *command){
       return argc;
 }
 int handle_redirection(char **arguments,int *argc){
-  for(int i = 0 ;i< argc;i++){
-    if(strcmp(arguments[i],">") == 0 || strcmp(arguments[i],"1>")){
+  for(int i = 0 ;i< *argc;i++){
+    if(strcmp(arguments[i],">") == 0 || strcmp(arguments[i],"1>") == 0){
       char* filename = arguments[i+1];
       arguments[i] = NULL;
       *argc= i;
