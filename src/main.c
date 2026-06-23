@@ -130,6 +130,19 @@ int handle_redirection(char **arguments,int *argc,int *redirected_fd){
       close(fd);
 
       return saved_stdout;
+    } 
+    else if(strcmp(arguments[i],"2>>") == 0) == 0){
+      char *filename = arguments[i+1];
+      arguments[i] = NULL;
+      *argc = i;
+
+      *redirected_fd = STDERR_FILENO;
+      int saved = dup(STDERR_FILENO);
+      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND);
+      dup2(fd,STDERR_FILENO);
+      close(fd);
+
+      return saved;
     }
     else if(strcmp(arguments[i],"2>") == 0){
       char* filename = arguments[i+1];
