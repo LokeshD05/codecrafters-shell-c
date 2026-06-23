@@ -102,13 +102,15 @@ int parser(char * input , char ** arguments, char *command){
       arguments[argc] = NULL;
       return argc;
 }
-int handle_redirection(char **arguments,int *argc){
+
+void handle_redirection(char **arguments,int *argc,int *redirected_fd){
   for(int i = 0 ;i< *argc;i++){
     if(strcmp(arguments[i],">") == 0 || strcmp(arguments[i],"1>") == 0){
       char* filename = arguments[i+1];
       arguments[i] = NULL;
       *argc= i;
       
+      *redirected_fd = STDOUT_FILENO;
       int saved_stdout = dup(STDOUT_FILENO);
       int fd = open(filename,O_WRONLY | O_CREAT | O_TRUNC,0644);
       dup2(fd,STDOUT_FILENO);
@@ -120,13 +122,14 @@ int handle_redirection(char **arguments,int *argc){
        char* filename = arguments[i+1];
       arguments[i] = NULL;
       *argc= i;
-      
-      int saved_stdout = dup(STDERR_FILENO);
+
+      *redirected_fd = STDERR_FILENO;
+      int saved = dup(STDERR_FILENO);
       int fd = open(filename,O_WRONLY | O_CREAT | O_TRUNC,0644);
       dup2(fd,STDERR_FILENO);
       close(fd);
 
-      return saved_stdout;
+      return saved;
     }
   }
 return -1;
@@ -148,7 +151,8 @@ int main(int argc, char *argv[])
     input[strlen(input) - 1] = '\0';
     
     int argc = parser(input,arguments,command);
-    int saved_stdout = handle_redirection(arguments,&argc);
+    int redirected_fd;
+    int saved_std = handle_redirection(arguments,&argc ,&redirected_fd);
     // exit command
     if (strcmp(input, "exit") == 0)
     {
@@ -251,9 +255,9 @@ int main(int argc, char *argv[])
         wait(NULL);
       }
     }
-    if(saved_stdout !=-1){
-      dup2(saved_stdout,STDOUT_FILENO);
-      close(saved_stdout);
+    if(saved_std !=-1){
+      dup2(saved_std,redirected_fd);
+      close(saved_std);
     }
   }
   return 0;
