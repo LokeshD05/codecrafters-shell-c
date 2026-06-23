@@ -103,7 +103,7 @@ int parser(char * input , char ** arguments, char *command){
       return argc;
 }
 
-void handle_redirection(char **arguments,int *argc,int *redirected_fd){
+int handle_redirection(char **arguments,int *argc,int *redirected_fd){
   for(int i = 0 ;i< *argc;i++){
     if(strcmp(arguments[i],">") == 0 || strcmp(arguments[i],"1>") == 0){
       char* filename = arguments[i+1];
