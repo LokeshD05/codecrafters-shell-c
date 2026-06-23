@@ -118,8 +118,21 @@ int handle_redirection(char **arguments,int *argc,int *redirected_fd){
       
       return saved_stdout;
     }
+    else if(strcmp(arguments[i],">>") == 0 || strcmp(arguments[i],"2>>") == 0){
+      char *filename = arguments[i+1];
+      arguments[i] = NULL;
+      *argc = i;
+
+      *redirected_fd = STDOUT_FILENO;
+      int saved_stdout = dup(STDOUT_FILENO);
+      int fd = open(filename,O_WRONLY | O_CREAT | O_APPEND);
+      dup2(fd,STDOUT_FILENO);
+      close(fd);
+
+      return saved_stdout;
+    }
     else if(strcmp(arguments[i],"2>") == 0){
-       char* filename = arguments[i+1];
+      char* filename = arguments[i+1];
       arguments[i] = NULL;
       *argc= i;
 
