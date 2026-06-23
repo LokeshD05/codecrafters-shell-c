@@ -101,7 +101,23 @@ int parser(char * input , char ** arguments, char *command){
       arguments[argc] = NULL;
       return argc;
 }
-
+int handle_redirection(char **arguments,int *argc){
+  for(int i = 0 ;i< argc;i++){
+    if(strcmp(arguments[i],">") == 0 || strcmp(arguments[i],"1>")){
+      char* filename = arguments[i+1];
+      arguments[i] = NULL;
+      *argc= i;
+      
+      int saved_stdout = dup(STDOUT_FILENO);
+      int fd = open(filename,O_WRONLY | O_CREAT | O_TRUNC,0644);
+      dup2(fd,STDOUT_FILENO);
+      close(fd);
+      
+      return saved_stdout;
+    }
+  }
+return -1;
+}
 
 int main(int argc, char *argv[])
 {
@@ -119,7 +135,7 @@ int main(int argc, char *argv[])
     input[strlen(input) - 1] = '\0';
     
     int argc = parser(input,arguments,command);
-   
+    int saved_stdout = handle_redirection(arguments,&argc);
     // exit command
     if (strcmp(input, "exit") == 0)
     {
@@ -221,6 +237,10 @@ int main(int argc, char *argv[])
       {
         wait(NULL);
       }
+    }
+    if(saved_stdout !=-1){
+      dup2(saved_stdout,STDOUT_FILENO);
+      close(saved_stdout);
     }
   }
   return 0;
