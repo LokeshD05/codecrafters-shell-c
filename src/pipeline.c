@@ -25,7 +25,8 @@ void pipeline_fn(char** arguments,int pipe_idx){
         }
         else{
             execvp(leftcmd[0],leftcmd);
-        }perror("error in pipeline.c");
+            perror("error in pipeline.c");
+        }
         exit(1);
     }
 
@@ -39,8 +40,8 @@ void pipeline_fn(char** arguments,int pipe_idx){
         }
         else{
             execvp(rightcmd[0],rightcmd);
+            perror("error in pipeline");
         }
-        perror("error in pipeline");
         exit(1);
     }
     close(fd[0]);
