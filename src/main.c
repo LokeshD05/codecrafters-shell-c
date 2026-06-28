@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <pipeline.h>
+
 
 #define MAX 1024
 
@@ -175,8 +177,21 @@ int main(int argc, char *argv[])
     char input[100];
     fgets(input, sizeof(input), stdin); 
     input[strlen(input) - 1] = '\0';
-    
+
     int argc = parser(input,arguments,command);
+
+    int pipe_idx = -1;
+    for(int i = 0;i<argc;i++){
+      if(argumenst[i] == '|'){
+        pipe_idx = i;
+        break;
+      }
+    }
+
+    if(pipe_idx != -1){
+      pipline_fn(arguments,pipe_idx);
+      continue;
+    }
     int redirected_fd;
     int saved_std = handle_redirection(arguments,&argc ,&redirected_fd);
     // exit command
