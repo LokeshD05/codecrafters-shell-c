@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 
     int pipe_idx = -1;
     for(int i = 0;i<argc;i++){
-      if(arguments[i] == '|'){
+      if(strcmp(arguments[i], "|") == 0){
         pipe_idx = i;
         break;
       }
