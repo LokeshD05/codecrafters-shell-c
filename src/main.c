@@ -8,13 +8,16 @@
 #include "builtin.h"
 #define MAX 1024
 
-int isbuilt_in(char *cmd)
-{
-  return strcmp(cmd, "echo") == 0 ||
-         strcmp(cmd, "exit") == 0 ||
-         strcmp(cmd, "type") == 0 ||
-         strcmp(cmd, "pwd") == 0;
-}
+// int isbuilt_in(char *cmd)
+// {
+//   if(cmd == NULL) 
+//     return 0;
+
+//   return strcmp(cmd, "echo") == 0 ||
+//          strcmp(cmd, "exit") == 0 ||
+//          strcmp(cmd, "type") == 0 ||
+//          strcmp(cmd, "pwd") == 0;
+// }
 
 
 
