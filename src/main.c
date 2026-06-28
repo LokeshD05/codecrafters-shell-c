@@ -5,7 +5,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include "pipeline.h"
-
+#include "builtin.h"
 #define MAX 1024
 
 int isbuilt_in(char *cmd)
@@ -16,38 +16,7 @@ int isbuilt_in(char *cmd)
          strcmp(cmd, "pwd") == 0;
 }
 
-void findPath(char *cmd)
-{
-  char *path_env = getenv("PATH");
 
-  if (!path_env)
-  {
-    printf("%s: not found\n");
-    return;
-  }
-
-  char path_copy[MAX];
-  strncpy(path_copy, path_env, MAX - 1);
-  path_copy[MAX - 1] = '\0';
-
-  char *dir = strtok(path_copy, ":");
-
-  while (dir)
-  {
-    char full_path[MAX];
-    snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
-
-    if (access(full_path, X_OK) == 0)
-    {
-      printf("%s is %s\n", cmd, full_path);
-      return;
-    }
-
-    dir = strtok(NULL, ":");
-  }
-
-  printf("%s: not found\n", cmd);
-}
 
 int parser(char * input , char ** arguments, char *command){
   
@@ -199,85 +168,89 @@ int main(int argc, char *argv[])
       break;
     }
 
-    // echo command
-    else if (strncmp(input, "echo ", 5) == 0)
-    {
-      for(int i =1 ;i< argc;i++){
-        if(i > 1)printf(" "); // add space between each arg
-        printf("%s",arguments[i]);
-      }
-      printf("\n");
+    // // echo command
+    // else if (strncmp(input, "echo ", 5) == 0)
+    // {
+    //   for(int i =1 ;i< argc;i++){
+    //     if(i > 1)printf(" "); // add space between each arg
+    //     printf("%s",arguments[i]);
+    //   }
+    //   printf("\n");
+    // }
+
+    // // type command
+    // else if (strncmp(input, "type ", 5) == 0)
+    // {
+    //   char *type = strtok(input, " ");
+    //   char *cmd = strtok(NULL, " ");
+
+    //   if (isbuilt_in(cmd))
+    //   {
+    //     printf("%s is a shell builtin\n", cmd);
+    //   }
+    //   else
+    //   {
+    //     findPath(cmd);
+    //   }
+    // }
+
+    // // pwd command
+    // else if (strncmp(input, "pwd", 3) == 0)
+    // {
+    //   char cwd[MAX];
+    //   if (getcwd(cwd, sizeof(cwd)) != NULL)
+    //   {
+    //     printf("%s\n", cwd);
+    //   }
+    //   else
+    //     perror("getcwd error");
+    // }
+
+    // // cd command
+    // else if (strncmp(input, "cd ", 3) == 0)
+    // {
+    //   char *cd = strtok(input, " ");
+    //   char *path = strtok(NULL, ""); // the path
+
+    //   if (path == NULL)
+    //   {
+    //     printf("cd: missing argument\n");
+    //     continue;
+    //   }
+
+    //   // ~
+    //   if (strncmp(path, "~", 1) == 0)
+    //   {
+    //     char *home_dir = getenv("HOME");
+
+    //     if (!home_dir)
+    //     {
+    //       printf("No home\n");
+    //       continue;
+    //     }
+
+    //     char full_path[MAX];
+    //     snprintf(full_path, sizeof(full_path), "%s%s", home_dir, path + 1);
+
+    //     if (chdir(full_path) != 0)
+    //     {
+    //       printf("cd: %s: No such file or directory\n", full_path);
+    //     }
+    //   }
+    //   else
+    //   {
+    //     if (chdir(path) != 0)
+    //     {
+    //       printf("cd: %s: No such file or directory\n", path);
+    //     }
+    //   }
+    // }
+
+    if(isbuilt_in(arguments[0])){
+       run_builtin(arguments);
     }
-
-    // type command
-    else if (strncmp(input, "type ", 5) == 0)
-    {
-      char *type = strtok(input, " ");
-      char *cmd = strtok(NULL, " ");
-
-      if (isbuilt_in(cmd))
-      {
-        printf("%s is a shell builtin\n", cmd);
-      }
-      else
-      {
-        findPath(cmd);
-      }
-    }
-
-    // pwd command
-    else if (strncmp(input, "pwd", 3) == 0)
-    {
-      char cwd[MAX];
-      if (getcwd(cwd, sizeof(cwd)) != NULL)
-      {
-        printf("%s\n", cwd);
-      }
-      else
-        perror("getcwd error");
-    }
-
-    // cd command
-    else if (strncmp(input, "cd ", 3) == 0)
-    {
-      char *cd = strtok(input, " ");
-      char *path = strtok(NULL, ""); // the path
-
-      if (path == NULL)
-      {
-        printf("cd: missing argument\n");
-        continue;
-      }
-
-      // ~
-      if (strncmp(path, "~", 1) == 0)
-      {
-        char *home_dir = getenv("HOME");
-
-        if (!home_dir)
-        {
-          printf("No home\n");
-          continue;
-        }
-
-        char full_path[MAX];
-        snprintf(full_path, sizeof(full_path), "%s%s", home_dir, path + 1);
-
-        if (chdir(full_path) != 0)
-        {
-          printf("cd: %s: No such file or directory\n", full_path);
-        }
-      }
-      else
-      {
-        if (chdir(path) != 0)
-        {
-          printf("cd: %s: No such file or directory\n", path);
-        }
-      }
-    }
-
     // running external programs
+    
     else
     {
       pid_t pid = fork();

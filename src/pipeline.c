@@ -3,6 +3,7 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "builtin.h"
 
 void pipeline_fn(char** arguments,int pipe_idx){
     arguments[pipe_idx] = NULL;
@@ -19,8 +20,12 @@ void pipeline_fn(char** arguments,int pipe_idx){
         close(fd[0]);
         close(fd[1]);
 
-        execvp(leftcmd[0],leftcmd);
-        perror("error in pipeline.c");
+        if(isbuilt_in(leftcmd[0])){
+            run_builtin(leftcmd);
+        }
+        else{
+            execvp(leftcmd[0],leftcmd);
+        }perror("error in pipeline.c");
         exit(1);
     }
 
@@ -29,8 +34,12 @@ void pipeline_fn(char** arguments,int pipe_idx){
         dup2(fd[0],STDIN_FILENO);
         close(fd[0]);
         close(fd[1]);
-
-        execvp(rightcmd[0],rightcmd);
+        if(isbuilt_in(rightcmd[0])){
+            run_builtin(rightcmd);
+        }
+        else{
+            execvp(rightcmd[0],rightcmd);
+        }
         perror("error in pipeline");
         exit(1);
     }
