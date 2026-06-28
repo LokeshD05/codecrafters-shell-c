@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
     }
 
     if(pipe_idx != -1){
-      pipline_fn(arguments,pipe_idx);
+      pipeline_fn(arguments,pipe_idx);
       continue;
     }
     int redirected_fd;
