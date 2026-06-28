@@ -4,8 +4,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
-#include <pipeline.h>
-
+#include "pipeline.h"
 
 #define MAX 1024
 
