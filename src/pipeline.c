@@ -39,38 +39,44 @@ void pipeline_fn(char **arguments, int argc, int pipe_idx)
     for (int i = 0; i < cmdCount; i++)
     {
         pids[i] = fork();
+        if (pids[i] == -1)
+        {
+            perror("fork error");
+            exit(1);
+        }
+        if (pids[i] == 0)
+        {
+            if (i == 0)
+            {
+                dup2(fd[0][1], STDOUT_FILENO);
+            }
+            else if (i == cmdCount - 1)
+            {
+                dup2(fd[i - 1][0], STDIN_FILENO);
+            }
+            // Middle commands
+            else
+            {
+                dup2(fd[i - 1][0], STDIN_FILENO);
+                dup2(fd[i][1], STDOUT_FILENO);
+            }
+            // close all pipes
+            for (int j = 0; j < cmdCount - 1; j++)
+            {
+                close(fd[j][0]);
+                close(fd[j][1]);
+            }
 
-        if (i == 0)
-        {
-            dup2(fd[0][1], STDOUT_FILENO);
-        }
-        else if (i == cmdCount - 1)
-        {
-            dup2(fd[i - 1][0], STDIN_FILENO);
-        }
-        // Middle commands
-        else
-        {
-            dup2(fd[i - 1][0], STDIN_FILENO);
-            dup2(fd[i][1], STDOUT_FILENO);
-        }
+            if (isbuilt_in(cmds[i][0]))
+            {
+                run_builtin(cmds[i]);
+                exit(0);
+            }
 
-        // close all pipes
-        for (int j = 0; j < cmdCount - 1; j++)
-        {
-            close(fd[j][0]);
-            close(fd[j][1]);
+            execvp(cmds[i][0], cmds[i]);
+            perror(cmds[i][0]);
+            exit(1);
         }
-
-        if (isbuilt_in(cmds[i][0]))
-        {
-            run_builtin(cmds[i]);
-            exit(0);
-        }
-
-        execvp(cmds[i][0], cmds[i]);
-        perror(cmds[i][0]);
-        exit(1);
     }
     // parent closes pipes
     for (int j = 0; j < cmdCount - 1; j++)
@@ -131,5 +137,4 @@ void pipeline_fn(char **arguments, int argc, int pipe_idx)
      wait(NULL);
      wait(NULL);
      */
-
 }
