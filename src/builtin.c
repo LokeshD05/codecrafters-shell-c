@@ -7,43 +7,44 @@
 
 void findPath(char *cmd)
 {
-  char *path_env = getenv("PATH");
+    char *path_env = getenv("PATH");
 
-  if (!path_env)
-  {
-    printf("%s: not found\n");
-    return;
-  }
-
-  char path_copy[MAX];
-  strncpy(path_copy, path_env, MAX - 1);
-  path_copy[MAX - 1] = '\0';
-
-  char *dir = strtok(path_copy, ":");
-
-  while (dir)
-  {
-    char full_path[MAX];
-    snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
-
-    if (access(full_path, X_OK) == 0)
+    if (!path_env)
     {
-      printf("%s is %s\n", cmd, full_path);
-      return;
+        printf("%s: not found\n");
+        return;
     }
 
-    dir = strtok(NULL, ":");
-  }
+    char path_copy[MAX];
+    strncpy(path_copy, path_env, MAX - 1);
+    path_copy[MAX - 1] = '\0';
 
-  printf("%s: not found\n", cmd);
+    char *dir = strtok(path_copy, ":");
+
+    while (dir)
+    {
+        char full_path[MAX];
+        snprintf(full_path, sizeof(full_path), "%s/%s", dir, cmd);
+
+        if (access(full_path, X_OK) == 0)
+        {
+            printf("%s is %s\n", cmd, full_path);
+            return;
+        }
+
+        dir = strtok(NULL, ":");
+    }
+
+    printf("%s: not found\n", cmd);
 }
 
 int isbuilt_in(char *cmd)
 {
-     if (cmd == NULL)
+    if (cmd == NULL)
         return 0;
-        
-    return strcmp(cmd, "echo") == 0 ||
+
+    return strcmp(cmd, "history") == 0 ||
+           strcmp(cmd, "echo") == 0 ||
            strcmp(cmd, "exit") == 0 ||
            strcmp(cmd, "type") == 0 ||
            strcmp(cmd, "pwd") == 0 ||
@@ -95,7 +96,7 @@ void run_builtin(char **arguments)
     else if (strcmp(arguments[0], "cd") == 0)
     {
         char *path = arguments[1];
-        
+
         if (path == NULL)
         {
             printf("cd: missing argument\n");
