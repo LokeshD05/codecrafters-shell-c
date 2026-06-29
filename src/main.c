@@ -8,16 +8,7 @@
 #include "builtin.h"
 #define MAX 1024
 
-// int isbuilt_in(char *cmd)
-// {
-//   if(cmd == NULL) 
-//     return 0;
 
-//   return strcmp(cmd, "echo") == 0 ||
-//          strcmp(cmd, "exit") == 0 ||
-//          strcmp(cmd, "type") == 0 ||
-//          strcmp(cmd, "pwd") == 0;
-// }
 
 
 
@@ -160,7 +151,7 @@ int main(int argc, char *argv[])
     }
 
     if(pipe_idx != -1){
-      pipeline_fn(arguments,pipe_idx);
+      pipeline_fn(arguments,argc,pipe_idx);
       continue;
     }
     int redirected_fd;
@@ -170,84 +161,6 @@ int main(int argc, char *argv[])
     {
       break;
     }
-
-    // // echo command
-    // else if (strncmp(input, "echo ", 5) == 0)
-    // {
-    //   for(int i =1 ;i< argc;i++){
-    //     if(i > 1)printf(" "); // add space between each arg
-    //     printf("%s",arguments[i]);
-    //   }
-    //   printf("\n");
-    // }
-
-    // // type command
-    // else if (strncmp(input, "type ", 5) == 0)
-    // {
-    //   char *type = strtok(input, " ");
-    //   char *cmd = strtok(NULL, " ");
-
-    //   if (isbuilt_in(cmd))
-    //   {
-    //     printf("%s is a shell builtin\n", cmd);
-    //   }
-    //   else
-    //   {
-    //     findPath(cmd);
-    //   }
-    // }
-
-    // // pwd command
-    // else if (strncmp(input, "pwd", 3) == 0)
-    // {
-    //   char cwd[MAX];
-    //   if (getcwd(cwd, sizeof(cwd)) != NULL)
-    //   {
-    //     printf("%s\n", cwd);
-    //   }
-    //   else
-    //     perror("getcwd error");
-    // }
-
-    // // cd command
-    // else if (strncmp(input, "cd ", 3) == 0)
-    // {
-    //   char *cd = strtok(input, " ");
-    //   char *path = strtok(NULL, ""); // the path
-
-    //   if (path == NULL)
-    //   {
-    //     printf("cd: missing argument\n");
-    //     continue;
-    //   }
-
-    //   // ~
-    //   if (strncmp(path, "~", 1) == 0)
-    //   {
-    //     char *home_dir = getenv("HOME");
-
-    //     if (!home_dir)
-    //     {
-    //       printf("No home\n");
-    //       continue;
-    //     }
-
-    //     char full_path[MAX];
-    //     snprintf(full_path, sizeof(full_path), "%s%s", home_dir, path + 1);
-
-    //     if (chdir(full_path) != 0)
-    //     {
-    //       printf("cd: %s: No such file or directory\n", full_path);
-    //     }
-    //   }
-    //   else
-    //   {
-    //     if (chdir(path) != 0)
-    //     {
-    //       printf("cd: %s: No such file or directory\n", path);
-    //     }
-    //   }
-    // }
 
     if(isbuilt_in(arguments[0])){
        run_builtin(arguments);
