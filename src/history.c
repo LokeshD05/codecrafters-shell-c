@@ -20,7 +20,7 @@ void print_history(int n_recent_cmds){
     if(n_recent_cmds == 0) 
         n_recent_cmds = history_count;
     
-    for(int i = history_count - n;i<history_count;i++){
+    for(int i = history_count - n_recent_cmds;i<history_count;i++){
         printf("%3d %s\n",i+1,history[i]);
     }
 }
