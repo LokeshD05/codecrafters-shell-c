@@ -136,7 +136,7 @@ void run_builtin(char **arguments)
     else if(strcmp(arguments[0] ,"history") == 0){
         int n = 0;
         if(arguments[1])
-            n = arguments[1];
+            n = atoi(arguments[1]);
         print_history(n);
     }
 }
