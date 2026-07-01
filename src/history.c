@@ -15,8 +15,12 @@ void add_history(char *line){
         history[history_count++] = strdup(line);    
 }
 
-void print_history(void){
-    for(int i= 0 ;i<history_count;i++){
+void print_history(int n_recent_cmds){
+    // if no arguments;
+    if(n == 0) 
+        n = history_count;
+    
+    for(int i = history_count - n;i<history_count;i++){
         printf("%3d %s\n",i+1,history[i]);
     }
 }

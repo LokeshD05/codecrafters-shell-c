@@ -134,6 +134,9 @@ void run_builtin(char **arguments)
     
     //history command
     else if(strcmp(arguments[0] ,"history") == 0){
-        print_history();
+        int n = 0;
+        if(arguments[1])
+            n = arguments[1];
+        print_history(n);
     }
 }
