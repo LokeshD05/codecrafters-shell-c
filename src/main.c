@@ -4,8 +4,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+
 #include "pipeline.h"
 #include "builtin.h"
+#include "history.h"
+
 #define MAX 1024
 
 
@@ -140,6 +143,8 @@ int main(int argc, char *argv[])
     fgets(input, sizeof(input), stdin); 
     input[strlen(input) - 1] = '\0';
 
+    add_history(input);
+    
     int argc = parser(input,arguments,command);
 
     int pipe_idx = -1;

@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "history.h"
+
 #define MAX 1024
 
 void findPath(char *cmd)
@@ -43,12 +45,12 @@ int isbuilt_in(char *cmd)
     if (cmd == NULL)
         return 0;
 
-    return strcmp(cmd, "history") == 0 ||
-           strcmp(cmd, "echo") == 0 ||
+    return strcmp(cmd, "echo") == 0 ||
            strcmp(cmd, "exit") == 0 ||
            strcmp(cmd, "type") == 0 ||
            strcmp(cmd, "pwd") == 0 ||
-           strcmp(cmd, "cd") == 0;
+           strcmp(cmd, "cd") == 0 ||
+           strcmp(cmd, "history") == 0;
 }
 
 void run_builtin(char **arguments)
@@ -128,5 +130,10 @@ void run_builtin(char **arguments)
                 printf("cd: %s: No such file or directory\n", path);
             }
         }
+    }
+    
+    //history command
+    else if(strcmp(arguments[0] ,"history") == 0){
+        print_history();
     }
 }
