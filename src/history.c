@@ -17,8 +17,8 @@ void add_history(char *line){
 
 void print_history(int n_recent_cmds){
     // if no arguments;
-    if(n == 0) 
-        n = history_count;
+    if(n_recent_cmds == 0) 
+        n_recent_cmds = history_count;
     
     for(int i = history_count - n;i<history_count;i++){
         printf("%3d %s\n",i+1,history[i]);
